@@ -34,7 +34,7 @@ function Ratecalc() {
             <Ratestepicon Icon={TiWeatherCloudy} text="Conditions"/>
         </div>
         {stage === "Location" && <Ratecalclocation setStage={setStage} /> }
-        {stage === "Load Details" && <Ratecalcloaddetails/> }
+        {stage === "Load Details" && <Ratecalcloaddetails setStage={setStage}/> }
     </div>
   )
 }
