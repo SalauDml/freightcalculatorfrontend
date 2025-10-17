@@ -8,6 +8,8 @@ import { TiWeatherCloudy } from "react-icons/ti";
 import { useState } from 'react';
 import Ratecalclocation from './Ratecalclocation';
 import Ratecalcloaddetails from './Ratecalcloaddetails';
+import Ratecalcservice from './Ratecalcservice';
+import RateCalcConditions from './RateCalcConditions';
 
 
 function Ratecalc() {
@@ -26,15 +28,17 @@ function Ratecalc() {
                 </div>
             </div>
         </div>
-        <div className={`bg-blue-600 h-1 transition-all duration-1000 ease-in-out ${stage === "Location" && "w-[25%]"} ${stage === "Load Details" && "w-[50%]"}`}></div>
+        <div className={`bg-blue-600 h-1 transition-all duration-1000 ease-in-out ${stage === "Location" && "w-[25%]"} ${stage === "Load Details" && "w-[50%]"} ${stage === "Service" && "w-[75%]"} ${stage === "Conditions" && "w-[100%]"}`}></div>
         <div className='flex justify-between p-4'>
-            <Ratestepicon Icon={IoLocationOutline} text="Location"/>
-            <Ratestepicon Icon={HiOutlineCube} text="Load Details"/>
-            <Ratestepicon Icon={IoNewspaperOutline} text="Service"/>
-            <Ratestepicon Icon={TiWeatherCloudy} text="Conditions"/>
+            <Ratestepicon Icon={IoLocationOutline} text="Location" currentStage={stage}/>
+            <Ratestepicon Icon={HiOutlineCube} text="Load Details" currentStage={stage}/>
+            <Ratestepicon Icon={IoNewspaperOutline} text="Service" currentStage={stage}/>
+            <Ratestepicon Icon={TiWeatherCloudy} text="Conditions" currentStage={stage}/>
         </div>
         {stage === "Location" && <Ratecalclocation setStage={setStage} /> }
         {stage === "Load Details" && <Ratecalcloaddetails setStage={setStage}/> }
+        {stage === "Service" && <Ratecalcservice setStage={setStage} />}
+        {stage === "Conditions" && <RateCalcConditions setStage={setStage} />}
     </div>
   )
 }
