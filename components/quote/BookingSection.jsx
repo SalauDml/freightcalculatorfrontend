@@ -36,7 +36,7 @@ export default function BookingSection({ data, formatCurrency, handleViewBooking
           <p className="text-gray-700">
             Click "Book Now" to schedule this load at the calculated rate of{" "}
             <span className="font-bold text-blue-600 text-xl">
-              {formatCurrency(data.bookingInfo.calculatedRate)}
+              {formatCurrency(data?.bookingInfo?.calculatedRate)}
             </span>
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function BookingSection({ data, formatCurrency, handleViewBooking
         <div className="mt-4 flex items-center justify-between text-sm">
           <div className="flex items-center gap-2 text-gray-500">
             <FaClock />
-            <span>Bookings are confirmed within {data.bookingInfo.confirmationTime}</span>
+            <span>Bookings are confirmed within {data?.bookingInfo?.confirmationTime}</span>
           </div>
           <button
             onClick={handleViewBookingPolicies}

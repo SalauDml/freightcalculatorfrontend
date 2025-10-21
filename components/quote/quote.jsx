@@ -106,15 +106,17 @@ export default function Quote({ quoteData }) {
 
   // Utility Functions
   const formatCurrency = (value) => {
-    if (isNaN(value)) return "$NaN";
+    if (value === undefined || value === null || isNaN(value)) return "$0.00";
     return `$${value.toFixed(2)}`;
   };
 
   const formatRatio = (ratio) => {
+    if (ratio === undefined || ratio === null || isNaN(ratio)) return "N/A";
     return `${ratio.toFixed(1)}:1`;
   };
 
   const getMarketConditionColor = (condition) => {
+    if (!condition) return "text-gray-600";
     switch (condition.toLowerCase()) {
       case "hot":
         return "text-green-600";
@@ -128,6 +130,7 @@ export default function Quote({ quoteData }) {
   };
 
   const getRatioColor = (ratio) => {
+    if (ratio === undefined || ratio === null || isNaN(ratio)) return "bg-gray-100 text-gray-700";
     if (ratio <= 0.5) return "bg-green-100 text-green-700";
     if (ratio <= 1.0) return "bg-yellow-100 text-yellow-700";
     return "bg-red-100 text-red-700";

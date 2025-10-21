@@ -25,28 +25,28 @@ export default function RouteAnalysis({ data, formatRatio, getMarketConditionCol
           <div className="bg-blue-50 rounded-lg p-6 space-y-4">
             <div className="flex items-center gap-2 text-blue-700 font-semibold">
               <FaMapMarkerAlt />
-              <h4 className="text-lg">Pickup Region: {data.routeAnalysis.pickup.region}</h4>
+              <h4 className="text-lg">Pickup Region: {data?.routeAnalysis?.pickup?.region}</h4>
             </div>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-gray-700 font-medium">Truck-to-Freight Ratio:</span>
-                <span className={`px-3 py-1 rounded-full text-sm font-bold ${getRatioColor(data.routeAnalysis.pickup.truckToFreightRatio)}`}>
-                  {formatRatio(data.routeAnalysis.pickup.truckToFreightRatio)}
+                <span className={`px-3 py-1 rounded-full text-sm font-bold ${getRatioColor(data?.routeAnalysis?.pickup?.truckToFreightRatio)}`}>
+                  {formatRatio(data?.routeAnalysis?.pickup?.truckToFreightRatio)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <span className="text-gray-700 font-medium">Market Condition:</span>
-                <span className={`text-lg font-bold ${getMarketConditionColor(data.routeAnalysis.pickup.marketCondition)}`}>
-                  {data.routeAnalysis.pickup.marketCondition}
+                <span className={`text-lg font-bold ${getMarketConditionColor(data?.routeAnalysis?.pickup?.marketCondition)}`}>
+                  {data?.routeAnalysis?.pickup?.marketCondition}
                 </span>
               </div>
 
               <div className="pt-2 border-t border-blue-200">
                 <p className="text-sm text-gray-700">
                   <span className="font-semibold">Rate Negotiation:</span>{" "}
-                  {data.routeAnalysis.pickup.rateNegotiation}
+                  {data?.routeAnalysis?.pickup?.rateNegotiation}
                 </p>
               </div>
             </div>
@@ -56,32 +56,32 @@ export default function RouteAnalysis({ data, formatRatio, getMarketConditionCol
           <div className="bg-purple-50 rounded-lg p-6 space-y-4">
             <div className="flex items-center gap-2 text-purple-700 font-semibold">
               <FaMapMarkerAlt />
-              <h4 className="text-lg">Delivery Region: {data.routeAnalysis.delivery.region}</h4>
+              <h4 className="text-lg">Delivery Region: {data?.routeAnalysis?.delivery?.region}</h4>
             </div>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-gray-700 font-medium">Truck-to-Freight Ratio:</span>
-                <span className={`px-3 py-1 rounded-full text-sm font-bold ${getRatioColor(data.routeAnalysis.delivery.truckToFreightRatio)}`}>
-                  {formatRatio(data.routeAnalysis.delivery.truckToFreightRatio)}
+                <span className={`px-3 py-1 rounded-full text-sm font-bold ${getRatioColor(data?.routeAnalysis?.delivery?.truckToFreightRatio)}`}>
+                  {formatRatio(data?.routeAnalysis?.delivery?.truckToFreightRatio)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <span className="text-gray-700 font-medium">Market Condition:</span>
-                <span className={`text-lg font-bold ${getMarketConditionColor(data.routeAnalysis.delivery.marketCondition)}`}>
-                  {data.routeAnalysis.delivery.marketCondition}
+                <span className={`text-lg font-bold ${getMarketConditionColor(data?.routeAnalysis?.delivery?.marketCondition)}`}>
+                  {data?.routeAnalysis?.delivery?.marketCondition}
                 </span>
               </div>
 
               <div className="pt-2 border-t border-purple-200 space-y-2">
                 <p className="text-sm text-gray-700">
                   <span className="font-semibold">Next Load Potential:</span>{" "}
-                  {data.routeAnalysis.delivery.nextLoadPotential}
+                  {data?.routeAnalysis?.delivery?.nextLoadPotential}
                 </p>
                 <p className="text-sm text-gray-700">
                   <span className="font-semibold">Available Loads:</span>{" "}
-                  <span className="text-purple-700 font-bold">{data.routeAnalysis.delivery.availableLoads} loads</span>
+                  <span className="text-purple-700 font-bold">{data?.routeAnalysis?.delivery?.availableLoads} loads</span>
                 </p>
               </div>
             </div>

@@ -37,18 +37,18 @@ export default function RateCards({ data, formatCurrency }) {
             <h3 className="text-xl font-semibold text-purple-900 mb-1">
               Spot Market Rate
             </h3>
-            <p className="text-sm text-purple-600">{data.spotMarketRate.label}</p>
+            <p className="text-sm text-purple-600">{data?.spotMarketRate?.label}</p>
           </div>
         </div>
         <div className="space-y-2">
           <div className="flex items-baseline gap-2">
             <span className="text-4xl font-bold text-purple-700">
-              {formatCurrency(data.spotMarketRate.total)}
+              {formatCurrency(data?.spotMarketRate?.total)}
             </span>
             <span className="text-gray-600 font-medium">Total</span>
           </div>
           <p className="text-purple-600 text-sm">
-            {formatCurrency(data.spotMarketRate.perMile)}/mile
+            {formatCurrency(data?.spotMarketRate?.perMile)}/mile
           </p>
         </div>
       </div>
@@ -62,18 +62,18 @@ export default function RateCards({ data, formatCurrency }) {
             </h3>
           </div>
           <span className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
-            {data.contractRate.label}
+            {data?.contractRate?.label}
           </span>
         </div>
         <div className="space-y-2">
           <div className="flex items-baseline gap-2">
             <span className="text-4xl font-bold text-teal-700">
-              {formatCurrency(data.contractRate.total)}
+              {formatCurrency(data?.contractRate?.total)}
             </span>
             <span className="text-gray-600 font-medium">Total</span>
           </div>
           <p className="text-teal-600 text-sm">
-            {formatCurrency(data.contractRate.perMile)}/mile
+            {formatCurrency(data?.contractRate?.perMile)}/mile
           </p>
         </div>
       </div>
