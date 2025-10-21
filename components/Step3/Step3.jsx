@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import { SiTicktick } from "react-icons/si";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Step3radiobutton from "./Step3radiobutton";
 import Step3fixedcosts from "./Step3fixedcosts";
 import Step3variablecosts from "./Step3variablecosts";
+import { useAppContext } from "@/context/AppContext";
 
 function Step3({ barvalue, setBarvalue, step, setStep }) {
-  const [radio, setRadio] = useState("default");
-  const [vehicleinfo, setVehicleInfo] = useState({
-    Semitruck: 45000,
-    sprintervan: 3500,
-    boxtruck: 10000,
-    cargovan: 1500,
-  });
-  const [vehicle, setVehicle] = useState("Semitruck");
-  const [selected, setSelected] = useState("monthly");
-  const [miles, setMiles] = useState(10000);
+  // ============================================
+  // STATE MANAGEMENT
+  // ============================================
+
+  // Get global state from context
+  const {vehicle, setVehicle, costdata, setCostdata} = useAppContext();
+
+
   return (
     <div className="mx-auto w-[50%] ">
+      {/* ============================================ */}
+      {/* PROGRESS HEADER */}
+      {/* ============================================ */}
       <div className="shadow-sm rounded-2xl p-4 mt-4 bg-white">
         <div className="w-full h-5 flex justify-between ">
           <div className="flex items-center gap-2">
@@ -36,6 +38,9 @@ function Step3({ barvalue, setBarvalue, step, setStep }) {
         ></progress>
       </div>
 
+      {/* ============================================ */}
+      {/* BACK NAVIGATION */}
+      {/* ============================================ */}
       <div
         className="mt-6 flex gap-2 items-center"
         onClick={() => {
@@ -47,6 +52,9 @@ function Step3({ barvalue, setBarvalue, step, setStep }) {
         <p className="text-blue-800">Back to previous Step</p>
       </div>
 
+      {/* ============================================ */}
+      {/* COST DATA SOURCE & VEHICLE SELECTION */}
+      {/* ============================================ */}
       <div className="shadow-md rounded-2xl p-4 mt-6 bg-white">
         <h2 className="w-fit text-3xl text-blue-800  font-bold">
           Calculate Your Cost Per Mile
@@ -57,6 +65,7 @@ function Step3({ barvalue, setBarvalue, step, setStep }) {
         </h3>
 
         <div className="w-full bg-blue-200 rounded-md p-4">
+          {/* Cost Data Source Radio Buttons */}
           <div>
             <h4 className="text-blue-800 font-bold">Cost Data Source</h4>
           </div>
@@ -65,32 +74,35 @@ function Step3({ barvalue, setBarvalue, step, setStep }) {
               text="We'll use typical costs for your vehicle type if you're just starting
           out or prefer estimates"
               label="Use Industry Averages"
-              radio={radio}
-              setRadio={setRadio}
+              radio={costdata.radio}
               value="default"
               onSelect={() => {
-                setRadio("default");
+                setCostdata((prev) => ({
+                  ...prev, radio:"default"
+                }));
               }}
+              setCostData={setCostdata}
             />
             <Step3radiobutton
               text="Use your actual costs if you have existing operations and real expense data"
               label="Enter My Own Data"
-              radio={radio}
-              setRadio={setRadio}
+              radio={costdata.radio}
               value="unique"
               onSelect={() => {
-                setRadio("unique");
+                setCostdata((prev) => ({
+                  ...prev, radio:"unique"
+                }));
               }}
+              setCostData={setCostdata}
             />
           </div>
 
-          <label className="mt-4 font-bold" htmlFor="">
+          {/* Vehicle Type Dropdown */}
+          <label className="mt-4 font-medium" htmlFor="">
             Vehicle Type
           </label>
           <select
-            className="bg-gray-400 w-full rounded-sm p-4  "
-            name=""
-            id=""
+            className="bg-gray-100 w-full rounded-sm px-4 py-2 text-gray-700  "
             onChange={(e) => setVehicle(e.target.value)}
           >
             <option value="Semitruck">Semi-Truck/Tractor Trailer</option>
@@ -99,17 +111,24 @@ function Step3({ barvalue, setBarvalue, step, setStep }) {
             <option value="cargovan">Cargo Van</option>
           </select>
 
-          <label className="font-bold" htmlFor="">
+          {/* Maximum Payload Input */}
+          <label className="font-medium text-gray-700 mt-3">
             Maximum Payload (lbs)
           </label>
           <input
-            className="w-full bg-gray-400 p-4 rounded-sm"
+            className="w-full bg-gray-200 px-4 py-1 rounded-sm"
             type="number"
-            name=""
-            id=""
-            defaultValue={vehicleinfo[vehicle]}
-            placeholder={vehicleinfo[vehicle]}
-            disabled={radio === "default"}
+            onChange={(e) => {
+              setCostdata((prev) => ({
+                ...prev,
+                customPayloads: {
+                  ...prev.customPayloads,
+                  [vehicle]: e.target.value
+                }
+              }))
+            }}
+            value={costdata.radio === "default" ? costdata.defaultPayloads[vehicle] : costdata.customPayloads[vehicle]}
+            disabled={costdata.radio === "default"}
           />
           <p className="text-blue-800 text-[10px] mt-2">
             Maximum weight your vehicle can legally transport
@@ -117,50 +136,94 @@ function Step3({ barvalue, setBarvalue, step, setStep }) {
         </div>
       </div>
 
+      {/* ============================================ */}
+      {/* FIXED & VARIABLE COSTS COMPONENTS */}
+      {/* ============================================ */}
       <div className="w-full p-4 shadow-sm grid grid-cols-2 bg-white rounded-sm mt-4 gap-4 ">
-        <Step3fixedcosts radio={radio} />
-        <Step3variablecosts radio={radio} />
+        <Step3fixedcosts radio={costdata.radio} />
+        <Step3variablecosts radio={costdata.radio} />
       </div>
+
+      {/* ============================================ */}
+      {/* MILES DRIVEN & COST SUMMARY */}
+      {/* ============================================ */}
       <div className="w-full p-4 shadow-sm bg-white">
+        {/* Miles Driven Input Section */}
         <div className="bg-gray-100 rounded-md p-2">
           <div >
             <p className="font-bold">Miles Driven</p>
           </div>
+
+          {/* Monthly/Annually Toggle */}
           <div className="flex gap-3">
             <div
               onClick={() => {
-                setSelected("monthly");
+                // Only convert if switching FROM annually TO monthly
+                if (costdata.frequency === "annually") {
+                  setCostdata((prev) => ({
+                    ...prev,
+                    frequency: "monthly",
+                    milesdriven: prev.milesdriven / 12
+                  }));
+                }
+                // If already monthly or undefined, just set to monthly without conversion
+                else if (costdata.frequency !== "monthly") {
+                  setCostdata((prev) => ({
+                    ...prev,
+                    frequency: "monthly"
+                  }));
+                }
+                // If already monthly, do nothing (prevents multiple clicks)
               }}
               className={`${
-                selected == "monthly"
+                costdata.frequency == "monthly"
                   ? "bg-blue-800 text-white"
                   : "bg-gray-400 text-black"
-              } px-5 py-1  rounded-md `}
+              } px-5 py-1  rounded-md cursor-pointer `}
             >
               Monthly
             </div>
             <div
               onClick={() => {
-                setSelected("annually");
+                // Only convert if switching FROM monthly TO annually
+                if (costdata.frequency === "monthly") {
+                  setCostdata((prev) => ({
+                    ...prev,
+                    frequency: "annually",
+                    milesdriven: prev.milesdriven * 12
+                  }));
+                }
+                // If already annually or undefined, just set to annually without conversion
+                else if (costdata.frequency !== "annually") {
+                  setCostdata((prev) => ({
+                    ...prev,
+                    frequency: "annually"
+                  }));
+                }
+                // If already annually, do nothing (prevents multiple clicks)
               }}
               className={`${
-                selected == "annually"
+                costdata.frequency == "annually"
                   ? "bg-blue-800 text-white"
                   : " bg-gray-400 text-black"
-              } px-5 py-1 rounded-md `}
+              } px-5 py-1 rounded-md cursor-pointer `}
             >
               Annually
             </div>
           </div>
+
+          {/* Miles Input Field */}
           <div className="flex gap-2 items-center mt-2">
             <input
               className="w-[80%] rounded-md border-1 border-gray-600 p-2"
               type="number"
               name=""
               id=""
-              value={miles}
+              value={costdata.milesdriven}
               onChange={(e) => {
-                setMiles(e.target.value);
+                setCostdata((prev) => ({
+                  ...prev,milesdriven:e.target.value
+                }));
               }}
             />
             <label className="w-[20%] font-bold" htmlFor="">
@@ -170,11 +233,14 @@ function Step3({ barvalue, setBarvalue, step, setStep }) {
           <p className="text-[10px]">Approximately 120,000 miles annually</p>
         </div>
 
-        <div className="bg-blue-200">
+        {/* Cost Per Mile Summary Display */}
+        <div className="bg-blue-200 p-4 mt-4">
             <div className="w-full flex justify-between">
                 <h2 className="font-semibold">Your Cost Per Mile:</h2>
                 <p className="text-blue-800 text-3xl font-bold">$1.75/mile</p>
             </div>
+
+            {/* Fixed & Variable Cost Breakdown */}
             <div className="flex w-[80%] justify-between mt-4">
                 <div className="flex flex-col ">
                     <p className="text-gray-800">Fixed Costs</p>
@@ -186,15 +252,16 @@ function Step3({ barvalue, setBarvalue, step, setStep }) {
                 </div>
             </div>
             <p className="text-sm text-gray-800 mt-4">This is your minimum cost to operate. For profitability, your rates should exceed this amount.</p>
-
-
         </div>
+
+        {/* ============================================ */}
+        {/* CONTINUE BUTTON */}
+        {/* ============================================ */}
         <button onClick={(e) => {e.preventDefault(); setBarvalue("90"); setStep(4); }} className="w-full bg-blue-800 p-3 rounded-md mt-6 text-white font-bold">Continue to Vehicle Information</button>
-
-
       </div>
     </div>
   );
 }
 
 export default Step3;
+

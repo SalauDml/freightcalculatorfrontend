@@ -10,8 +10,11 @@ export default function Step1({barvalue, setBarvalue,step,setStep}) {
 
   const onContinue = (e) => {
     e.preventDefault();
-    setBarvalue("40");
-    setStep(2);
+    if (selectedUserType!= null){
+      setBarvalue("40");
+      setStep(2);
+    }
+    
   }
   return (
     <div className="mx-auto w-[50%]">
@@ -48,7 +51,7 @@ export default function Step1({barvalue, setBarvalue,step,setStep}) {
         </div>
 
         <div className="w-fit mx-auto mt-6 relative">
-          <FaArrowRightLong className={`${selectedUserType!=null ? "absolute top-[35%] right-[9%] text-white" : "hidden"} `}/>
+          <FaArrowRightLong className={`${selectedUserType!=null ? "absolute top-1/2 -translate-y-1/2 right-[9%] text-white" : "hidden"} `}/>
           <button onClick={onContinue} className={`py-3 pl-7 pr-10 rounded-sm ${selectedUserType!= null ? "bg-blue-800  text-white" : "bg-gray-50 text-gray-700"}  `}>Continue</button>
         </div>
       </div>

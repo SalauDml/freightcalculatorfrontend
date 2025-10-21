@@ -2,11 +2,26 @@ import React, { useState } from 'react'
 import { TiWeatherCloudy } from "react-icons/ti";
 import { IoSearchOutline } from "react-icons/io5";
 
-function RateCalcConditions({ setStage }) {
+function RateCalcConditions({ setStage, onComplete }) {
   const [weatherCondition, setWeatherCondition] = useState("Normal");
   const [season, setSeason] = useState("Fall");
   const [fuelPrice, setFuelPrice] = useState("3.50");
   const [destinationMarket, setDestinationMarket] = useState("Neutral");
+
+  const handleCalculateRate = () => {
+    // Collect all form data from this stage and pass to parent
+    const conditionsData = {
+      weatherCondition,
+      season,
+      fuelPrice: parseFloat(fuelPrice),
+      destinationMarket
+    };
+
+    // Call the onComplete handler passed from parent
+    if (onComplete) {
+      onComplete(conditionsData);
+    }
+  };
 
   return (
     <div className='p-4 bg-white'>
@@ -88,6 +103,7 @@ function RateCalcConditions({ setStage }) {
           Previous
         </button>
         <button
+          onClick={handleCalculateRate}
           className='bg-blue-600 px-6 py-2 rounded-md text-white flex items-center gap-2 hover:bg-blue-700'
         >
           <IoSearchOutline size={20}/>

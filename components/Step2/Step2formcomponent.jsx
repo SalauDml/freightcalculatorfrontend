@@ -1,6 +1,6 @@
 import React from "react";
 
-function Step2formcomponent({ Icon, placeholder, label }) {
+function Step2formcomponent({ Icon,placeholder,label,onChange,value,name }) {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-1.5">
@@ -10,9 +10,12 @@ function Step2formcomponent({ Icon, placeholder, label }) {
         </label>
       </div>
       <input
-        className="border-2 border-gray-400 p-4 rounded-lg  focus:border-blue-800 focus:outline-none"
+        name={name}
+        className="border-2 border-gray-400 p-4 rounded-lg  focus:border-blue-800 focus:outline-none focus:border-2"
         type="text"
         placeholder={placeholder}
+        value={value}
+        onChange={ onChange}
       />
     </div>
   );
